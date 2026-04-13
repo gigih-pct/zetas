@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
         // Add UserSeeder to create 50 realistic users
         $this->call(UserSeeder::class);
         $this->call(MaterialPriceSeeder::class);
+        $this->call(ProjectSeeder::class);
 
         User::factory()->create([
             'name' => 'Admin Zetas',
