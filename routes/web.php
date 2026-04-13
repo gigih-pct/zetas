@@ -9,12 +9,12 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
+Route::get('/', [\App\Http\Controllers\LandingPageController::class, 'index'])->name('landing');
+
 Route::middleware(['auth', 'verified'])->group(function () {
     
     // Overview / Beranda
-    Route::get('/', function () {
-        return view('dashboard.beranda.index');
-    })->name('dashboard.beranda');
+    Route::get('/dashboard', [\App\Http\Controllers\LandingPageController::class, 'index'])->name('dashboard.beranda');
 
     // Internal Modules
     Route::prefix('dashboard/internal')->group(function () {
