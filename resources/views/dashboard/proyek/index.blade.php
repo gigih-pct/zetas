@@ -1,88 +1,146 @@
 @extends('dashboard.layout')
 
-@section('header', 'Proyek Pekerjaan')
+@section('header', 'Architectural Log')
 
 @section('content')
-<div class="space-y-10 md:space-y-16 animate-in slide-in-from-bottom-5 duration-1000">
-    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 md:gap-10">
+<div class="space-y-16 animate-in slide-in-from-right-10 duration-1000">
+    <!-- Blueprint Header -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-10 relative">
+        <div class="hidden lg:block absolute -left-16 bottom-0 w-8 h-32 matrix-pattern opacity-10"></div>
         <div>
-            <h3 class="text-2xl md:text-3xl font-black tracking-tighter text-black uppercase">Operasional Lapangan</h3>
-            <p class="text-[9px] md:text-[10px] font-black text-black/30 uppercase tracking-[0.3em] mt-2 md:mt-3">Infrastructure Monitoring Unit</p>
+            <div class="flex items-center gap-4 mb-4">
+                <span class="px-3 py-1 bg-black text-construction-yellow text-[9px] font-bold uppercase tracking-[0.3em] rounded">Site Management</span>
+                <div class="h-px w-12 bg-black opacity-10"></div>
+            </div>
+            <h3 class="text-4xl font-black tracking-tighter text-black uppercase leading-tight">Project Execution<br>Blueprint</h3>
+            <p class="text-[10px] font-black text-black/20 uppercase tracking-[0.5em] mt-6 italic">Secure Site Monitoring / Level 4 Access</p>
         </div>
-        <button class="w-full md:w-auto px-6 md:px-10 py-4 md:py-5 bg-construction-yellow text-black font-black rounded-xl md:rounded-2xl text-[9px] md:text-[10px] uppercase tracking-[0.3em] shadow-apple hover:bg-black hover:text-construction-yellow transition-all active:scale-95 border-2 border-black">
-            + Tambah Proyek Baru
+        <button class="w-full md:w-auto px-12 py-6 bg-construction-yellow text-black font-black rounded-3xl text-[10px] uppercase tracking-[0.4em] shadow-heavy hover:bg-black hover:text-white transition-all transform active:scale-95 border-2 border-black flex items-center justify-center gap-4 group">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" class="group-hover:rotate-180 transition-transform"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            Initialize Project
         </button>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
-        <!-- Project Card 1: Strict Industrial -->
-        <div class="bg-white rounded-[32px] md:rounded-[40px] border-2 border-black overflow-hidden group hover:shadow-heavy transition-all duration-500">
-            <div class="h-40 md:h-48 bg-black relative flex items-center justify-center">
-                <div class="w-full h-full bg-[radial-gradient(#FFCD00_1px,transparent_1px)] [background-size:20px_20px] opacity-20"></div>
-                <div class="absolute top-6 md:top-8 right-6 md:right-8">
-                    <span class="px-3 md:px-4 py-1.5 bg-construction-yellow text-black text-[8px] md:text-[9px] font-black rounded-lg uppercase tracking-widest border-2 border-black">In-Progress</span>
+    <!-- The Architectural Strip View -->
+    <div class="space-y-0 relative">
+        <!-- Vertical Measuring Line -->
+        <div class="absolute left-6 md:left-12 top-0 bottom-0 w-px bg-black/10 border-l border-dashed border-black"></div>
+
+        <!-- Project Strip 01 -->
+        <div class="relative pl-16 md:pl-28 py-12 group">
+            <!-- Node Marker -->
+            <div class="absolute left-4 md:left-10 top-16 w-4 h-4 rounded-full bg-black border-4 border-construction-yellow z-10 shadow-xl group-hover:scale-125 transition-transform"></div>
+            
+            <div class="bg-white border-2 border-black rounded-[40px] overflow-hidden hover:shadow-heavy transition-all duration-700 flex flex-col xl:flex-row">
+                <!-- Visual Sector (Blueprint Grid) -->
+                <div class="xl:w-80 bg-black flex flex-col justify-between p-10 relative overflow-hidden group-hover:bg-construction-yellow transition-colors duration-500">
+                    <div class="w-full h-full absolute inset-0 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:20px_20px] opacity-10 group-hover:opacity-20 group-hover:bg-[radial-gradient(#000000_1px,transparent_1px)]"></div>
+                    <div class="relative z-10 flex flex-col h-full">
+                        <span class="text-[9px] font-black text-white/30 group-hover:text-black/30 uppercase tracking-[0.4em] mb-auto">NODE ZT-01</span>
+                        <div class="mt-20">
+                            <span class="text-4xl font-black text-construction-yellow group-hover:text-black tracking-tighter">35%</span>
+                            <p class="text-[9px] font-black text-white group-hover:text-black uppercase tracking-widest mt-2">Completion Mask</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="absolute bottom-6 md:bottom-8 left-6 md:left-10">
-                    <p class="text-[9px] md:text-[10px] font-black text-construction-yellow/40 uppercase tracking-[0.4em]">Node: ZT-PR-01</p>
-                </div>
-            </div>
-            <div class="p-6 md:p-10">
-                <h4 class="font-black text-xl md:text-2xl mb-2 tracking-tighter uppercase group-hover:text-construction-yellow transition-colors">Warehouse C3 Jakarta</h4>
-                <p class="text-[9px] md:text-[10px] text-black/40 mb-8 md:mb-10 border-b border-black/[0.05] pb-4 md:pb-6 font-bold uppercase tracking-widest truncate">Jl. Daan Mogot, Jakarta Barat</p>
                 
-                <div class="space-y-4 md:space-y-6">
-                    <div class="flex justify-between text-[10px] md:text-[11px] font-black uppercase tracking-widest">
-                        <span class="text-black/30">Completion</span>
-                        <span class="text-black">35.4%</span>
+                <!-- Content Sector -->
+                <div class="flex-1 p-10 md:p-14 space-y-10">
+                    <div class="flex flex-col md:flex-row justify-between items-start gap-6">
+                        <div>
+                            <h4 class="text-2xl font-black text-black uppercase tracking-tighter mb-2 group-hover:text-construction-yellow transition-colors">Warehouse C3 Jakarta</h4>
+                            <div class="flex items-center gap-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" class="opacity-30"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                                <span class="text-[10px] font-bold text-black/40 uppercase tracking-widest">Jl. Daan Mogot, Jakarta Barat</span>
+                            </div>
+                        </div>
+                        <div class="flex gap-4">
+                            <div class="px-6 py-2 border-2 border-black rounded-xl text-[9px] font-black uppercase tracking-widest text-black">Active Zone</div>
+                            <div class="px-6 py-2 bg-black text-white rounded-xl text-[9px] font-black uppercase tracking-widest">Priority 01</div>
+                        </div>
                     </div>
-                    <div class="w-full bg-black/10 h-2 md:h-3 rounded-full overflow-hidden">
-                        <div class="bg-black h-full w-[35%] transition-all duration-1000"></div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-10 pt-10 border-t border-black/5">
+                        <div class="space-y-4">
+                            <p class="text-[10px] font-black text-black/20 uppercase tracking-widest">Team Deployment</p>
+                            <div class="flex -space-x-4">
+                                @for($i=0; $i<4; $i++)
+                                    <div class="w-12 h-12 rounded-full border-4 border-white bg-black flex items-center justify-center text-[10px] text-construction-yellow font-black shadow-xl">OP</div>
+                                @endfor
+                                <div class="w-12 h-12 rounded-full border-4 border-white bg-construction-yellow flex items-center justify-center text-[10px] text-black font-black shadow-xl">+12</div>
+                            </div>
+                        </div>
+                        <div class="space-y-4">
+                            <p class="text-[10px] font-black text-black/20 uppercase tracking-widest">Next Milestone</p>
+                            <div class="space-y-2">
+                                <p class="text-xs font-black uppercase">Pondasi Zona C-4</p>
+                                <p class="text-[9px] font-bold text-black/40 uppercase tracking-widest">TGT: 24 Oct 2024</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-end gap-6">
+                            <button class="px-10 py-5 bg-black text-construction-yellow rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-construction-yellow hover:text-black transition-all shadow-heavy">Site Command</button>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="px-6 md:px-10 py-6 md:py-8 bg-black/[0.02] border-t-2 border-black flex gap-4 md:gap-6">
-                <button class="flex-1 py-3 md:py-4 text-[9px] md:text-[10px] font-black uppercase tracking-widest text-black/40 hover:text-black transition-colors">Audit File</button>
-                <button class="flex-1 py-3 md:py-4 text-[9px] md:text-[10px] font-black uppercase tracking-widest bg-construction-yellow text-black rounded-lg md:rounded-xl border-2 border-black hover:bg-black hover:text-white transition-all">Update Site</button>
             </div>
         </div>
 
-        <!-- Project Card 2 -->
-        <div class="bg-white rounded-[32px] md:rounded-[40px] border-2 border-black overflow-hidden group hover:shadow-heavy transition-all duration-500">
-            <div class="h-40 md:h-48 bg-construction-yellow relative flex items-center justify-center">
-                <div class="w-full h-full bg-[radial-gradient(#000_1px,transparent_1px)] [background-size:20px_20px] opacity-10"></div>
-                <div class="absolute top-6 md:top-8 right-6 md:right-8">
-                    <span class="px-3 md:px-4 py-1.5 bg-black text-construction-yellow text-[8px] md:text-[9px] font-black rounded-lg uppercase tracking-widest border-2 border-black">Verification</span>
+        <!-- Project Strip 02 -->
+        <div class="relative pl-16 md:pl-28 py-12 group">
+            <!-- Node Marker -->
+            <div class="absolute left-4 md:left-10 top-16 w-12 h-0.5 bg-black z-10"></div>
+            
+            <div class="bg-black border-2 border-black rounded-[40px] overflow-hidden hover:shadow-heavy transition-all duration-700 flex flex-col xl:flex-row">
+                <!-- Visual Sector (High Contrast Grey) -->
+                <div class="xl:w-80 bg-white flex flex-col justify-between p-10 relative overflow-hidden group-hover:bg-construction-yellow transition-colors duration-500">
+                    <div class="w-full h-full absolute inset-0 matrix-pattern opacity-10"></div>
+                    <div class="relative z-10 flex flex-col h-full">
+                        <span class="text-[9px] font-black text-black/30 uppercase tracking-[0.4em] mb-auto">NODE ZT-42</span>
+                        <div class="mt-20">
+                            <span class="text-4xl font-black text-black tracking-tighter">92%</span>
+                            <p class="text-[9px] font-black text-black/40 uppercase tracking-widest mt-2">Completion Mask</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="absolute bottom-6 md:bottom-8 left-6 md:left-10">
-                    <p class="text-[9px] md:text-[10px] font-black text-black/40 uppercase tracking-[0.4em]">Node: ZT-PR-42</p>
-                </div>
-            </div>
-            <div class="p-6 md:p-10">
-                <h4 class="font-black text-xl md:text-2xl mb-2 tracking-tighter uppercase group-hover:text-construction-yellow transition-colors">Zetas HQ Extension</h4>
-                <p class="text-[9px] md:text-[10px] text-black/40 mb-8 md:mb-10 border-b border-black/[0.05] pb-4 md:pb-6 font-bold uppercase tracking-widest truncate">BSD City, Tangerang</p>
                 
-                <div class="space-y-4 md:space-y-6">
-                    <div class="flex justify-between text-[10px] md:text-[11px] font-black uppercase tracking-widest">
-                        <span class="text-black/30">Completion</span>
-                        <span class="text-black">92.0%</span>
+                <!-- Content Sector (Dark Mode) -->
+                <div class="flex-1 p-10 md:p-14 space-y-10 text-white">
+                    <div class="flex flex-col md:flex-row justify-between items-start gap-6">
+                        <div>
+                            <h4 class="text-2xl font-black uppercase tracking-tighter mb-2 group-hover:text-construction-yellow transition-colors">Zetas HQ Extension</h4>
+                            <div class="flex items-center gap-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" class="opacity-30"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                                <span class="text-[10px] font-bold text-white/40 uppercase tracking-widest">BSD City, Tangerang</span>
+                            </div>
+                        </div>
+                        <div class="flex gap-4">
+                            <div class="px-6 py-2 border-2 border-white/20 rounded-xl text-[9px] font-black uppercase tracking-widest text-construction-yellow">Verification</div>
+                            <div class="px-6 py-2 bg-construction-yellow text-black rounded-xl text-[9px] font-black uppercase tracking-widest">Final Phase</div>
+                        </div>
                     </div>
-                    <div class="w-full bg-black/10 h-2 md:h-3 rounded-full overflow-hidden">
-                        <div class="bg-construction-yellow h-full w-[92%] transition-all duration-1000"></div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-10 pt-10 border-t border-white/10">
+                        <div class="space-y-4">
+                            <p class="text-[10px] font-black text-white/20 uppercase tracking-widest">Team Deployment</p>
+                            <div class="flex -space-x-4">
+                                @for($i=0; $i<3; $i++)
+                                    <div class="w-12 h-12 rounded-full border-4 border-black bg-white flex items-center justify-center text-[10px] text-black font-black shadow-xl">ENG</div>
+                                @endfor
+                            </div>
+                        </div>
+                        <div class="space-y-4">
+                            <p class="text-[10px] font-black text-white/20 uppercase tracking-widest">Handover Status</p>
+                            <div class="space-y-2">
+                                <p class="text-xs font-black uppercase text-construction-yellow">Site Clearing Complete</p>
+                                <p class="text-[9px] font-bold text-white/40 uppercase tracking-widest">Status: Ready for Audit</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-end gap-6">
+                            <button class="px-10 py-5 bg-white text-black rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-construction-yellow transition-all shadow-heavy">Verify Blueprint</button>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="px-6 md:px-10 py-6 md:py-8 bg-black/[0.02] border-t-2 border-black flex gap-4 md:gap-6">
-                <button class="flex-1 py-3 md:py-4 text-[9px] md:text-[10px] font-black uppercase tracking-widest text-black/40 hover:text-black transition-colors">Audit File</button>
-                <button class="flex-1 py-3 md:py-4 text-[9px] md:text-[10px] font-black uppercase tracking-widest bg-black text-white rounded-lg md:rounded-xl border-2 border-black hover:bg-construction-yellow hover:text-black transition-all">Serah Terima</button>
-            </div>
-        </div>
-
-        <!-- Add New Card: High Contrast -->
-        <div class="border-4 border-dashed border-black/[0.1] rounded-[32px] md:rounded-[40px] flex flex-col items-center justify-center p-12 md:p-16 hover:border-construction-yellow hover:bg-black group transition-all duration-500 cursor-pointer">
-            <div class="w-16 h-16 md:w-20 md:h-20 rounded-xl md:rounded-2xl border-2 border-black flex items-center justify-center mb-6 md:mb-8 group-hover:bg-construction-yellow group-hover:scale-110 transition-all shadow-heavy bg-white">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="4" class="md:w-8 md:h-8 transition-transform group-hover:rotate-90"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-            </div>
-            <p class="font-black text-[10px] md:text-[11px] uppercase tracking-[0.3em] md:tracking-[0.4em] text-black/20 group-hover:text-construction-yellow transition-colors text-center leading-loose">Secure Input<br>Protocol 092</p>
         </div>
     </div>
 </div>
