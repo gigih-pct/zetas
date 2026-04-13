@@ -18,7 +18,7 @@
         }
     </style>
 </head>
-<body class="bg-white text-black font-sans antialiased selection:bg-construction-yellow selection:text-black" x-data="{ mobileMenuOpen: false }">
+<body class="bg-white text-black font-sans antialiased selection:bg-construction-yellow selection:text-black" x-data="{ mobileMenuOpen: false, userDropdownOpen: false }">
     <div class="flex min-h-screen relative">
         <!-- Mobile Sidebar Overlay -->
         <div 
@@ -77,13 +77,50 @@
                         <span class="text-[10px] font-black uppercase tracking-[0.2em]">Otoritas Aktif</span>
                     </div>
                     
-                    <div class="flex items-center gap-3 md:gap-5 pl-4 md:pl-10 border-l border-black/[0.05]">
+                    <div class="flex items-center gap-3 md:gap-5 pl-4 md:pl-10 border-l border-black/[0.05] relative">
                         <div class="text-right hidden sm:block">
                             <p class="text-[10px] md:text-[11px] font-black uppercase tracking-tight truncate max-w-[100px]">{{ Auth::user()->name ?? 'Administrator' }}</p>
                             <p class="text-[9px] text-black/30 font-bold uppercase tracking-widest mt-0.5">Level: Pusat</p>
                         </div>
-                        <div class="w-8 h-8 md:w-10 md:h-10 rounded-lg md:rounded-xl bg-construction-yellow flex items-center justify-center text-black font-black text-xs md:text-sm shadow-xl transition-transform hover:scale-110 cursor-pointer">
+                        <button 
+                            @click="userDropdownOpen = !userDropdownOpen"
+                            @click.away="userDropdownOpen = false"
+                            class="w-8 h-8 md:w-10 md:h-10 rounded-lg md:rounded-xl bg-construction-yellow flex items-center justify-center text-black font-black text-xs md:text-sm shadow-xl transition-transform hover:scale-110 cursor-pointer outline-none focus:ring-2 focus:ring-black/5"
+                        >
                             {{ substr(Auth::user()->name ?? 'Z', 0, 1) }}
+                        </button>
+
+                        <!-- User Dropdown Menu -->
+                        <div 
+                            x-show="userDropdownOpen"
+                            x-transition:enter="transition ease-out duration-200"
+                            x-transition:enter-start="opacity-0 scale-95"
+                            x-transition:enter-end="opacity-100 scale-100"
+                            x-transition:leave="transition ease-in duration-150"
+                            x-transition:leave-start="opacity-100 scale-100"
+                            x-transition:leave-end="opacity-0 scale-95"
+                            class="absolute top-full right-0 mt-4 w-64 bg-white border-2 border-black rounded-3xl shadow-heavy py-4 z-50"
+                            x-cloak
+                        >
+                            <div class="px-6 py-4 border-b border-black/5 mb-2 sm:hidden text-left">
+                                <p class="text-[11px] font-black uppercase text-black">{{ Auth::user()->name ?? 'Administrator' }}</p>
+                                <p class="text-[9px] text-black/30 font-bold uppercase tracking-widest mt-0.5">Level: Pusat</p>
+                            </div>
+                            
+                            <a href="{{ route('profile.edit') }}" class="flex items-center gap-4 px-6 py-3 text-black/60 hover:text-black hover:bg-black/[0.03] transition-colors group">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="transition-transform group-hover:scale-110"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                                <span class="text-[11px] font-black uppercase tracking-widest">Profile Settings</span>
+                            </a>
+                            
+                            <div class="mx-6 my-2 border-t border-black/5"></div>
+                            
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit" class="w-full flex items-center gap-4 px-6 py-3 text-red-500 hover:bg-red-50 transition-colors group text-left">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="transition-transform group-hover:scale-110"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                                    <span class="text-[11px] font-black uppercase tracking-widest">Keluar Sistem</span>
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>
