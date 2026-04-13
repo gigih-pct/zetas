@@ -16,9 +16,12 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // Add UserSeeder to create 50 realistic users
-        $this->call(UserSeeder::class);
-        $this->call(MaterialPriceSeeder::class);
-        $this->call(ProjectSeeder::class);
+        $this->call([
+            UserSeeder::class,
+            MaterialPriceSeeder::class,
+            ProjectSeeder::class,
+            InventorySeeder::class,
+        ]);
 
         User::factory()->create([
             'name' => 'Admin Zetas',
