@@ -38,40 +38,32 @@
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-black/[0.05]">
-                    @php
-                        $materials = [
-                            ['Semen Portland', 'Binder', 'Zak 50kg', '72.500', 'up'],
-                            ['Pasir Pasang', 'Agregat', 'm3', '210.000', 'stable'],
-                            ['Besi Beton 10mm', 'Struktur', 'Batang 12m', '98.000', 'down'],
-                            ['Batu Belah', 'Agregat', 'm3', '195.000', 'stable'],
-                            ['Kayu Meranti 4/6', 'Kayu', 'm3', '4.200.000', 'up'],
-                            ['Bata Merah Press', 'Dinding', 'Pcs', '850', 'stable'],
-                        ];
-                    @endphp
-                    @foreach($materials as $material)
-                    <tr class="hover:bg-construction-yellow/10 transition-colors group">
-                        <td class="px-8 md:px-12 py-6 md:py-8">
-                            <p class="font-black text-sm text-black uppercase tracking-tight">{{ $material[0] }}</p>
-                        </td>
-                        <td class="px-8 md:px-12 py-6 md:py-8">
-                            <span class="text-[10px] font-bold text-black/40 uppercase tracking-widest">{{ $material[1] }}</span>
-                        </td>
-                        <td class="px-8 md:px-12 py-6 md:py-8">
-                            <span class="text-[11px] font-black text-black uppercase tracking-tighter">{{ $material[2] }}</span>
-                        </td>
-                        <td class="px-8 md:px-12 py-6 md:py-8 text-right font-black text-black">
-                            Rp {{ $material[3] }}
-                        </td>
-                        <td class="px-8 md:px-12 py-6 md:py-8">
-                            @if($material[4] == 'up')
-                                <span class="text-red-500 font-bold text-[10px]">▲ INCREASE</span>
-                            @elseif($material[4] == 'down')
-                                <span class="text-green-500 font-bold text-[10px]">▼ DECREASE</span>
-                            @else
-                                <span class="text-black/30 font-bold text-[10px]">● STABLE</span>
-                            @endif
-                        </td>
-                    </tr>
+                    @foreach($groupedMaterials as $category => $items)
+                        <tr class="bg-black/[0.02]">
+                            <td colspan="5" class="px-8 md:px-12 py-3 border-y border-black/10">
+                                <span class="text-[9px] font-black uppercase tracking-[0.3em] text-black/40">{{ $category }}</span>
+                            </td>
+                        </tr>
+                        @foreach($items as $item)
+                        <tr class="hover:bg-construction-yellow/10 transition-colors group">
+                            <td class="px-8 md:px-12 py-5 md:py-6">
+                                <p class="font-black text-sm text-black uppercase tracking-tight">{{ $item->name }}</p>
+                            </td>
+                            <td class="px-8 md:px-12 py-5 md:py-6">
+                                <span class="text-[10px] font-bold text-black/40 uppercase tracking-widest">{{ $item->category }}</span>
+                            </td>
+                            <td class="px-8 md:px-12 py-5 md:py-6">
+                                <span class="text-[11px] font-black text-black uppercase tracking-tighter">{{ $item->unit }}</span>
+                            </td>
+                            <td class="px-8 md:px-12 py-5 md:py-6 text-right font-black text-black">
+                                <p class="text-[10px] text-black/30 font-bold mb-1 tracking-widest">EST. PRICE</p>
+                                Rp {{ number_format($item->min_price, 0, ',', '.') }} - {{ number_format($item->max_price, 0, ',', '.') }}
+                            </td>
+                            <td class="px-8 md:px-12 py-5 md:py-6">
+                                <span class="text-black/30 font-bold text-[10px] tracking-widest uppercase italic">● Verified Index</span>
+                            </td>
+                        </tr>
+                        @endforeach
                     @endforeach
                 </tbody>
             </table>
