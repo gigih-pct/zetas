@@ -36,4 +36,39 @@ class ProjectController extends Controller
 
         return redirect()->back()->with('success', 'Project initialized successfully. Node added to Architectural Log.');
     }
+
+    public function update(Request $request, $id)
+    {
+        $project = Project::findOrFail($id);
+        
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'address' => 'required|string',
+            'sector' => 'required|string',
+            'node_id' => 'required|string|unique:projects,node_id,' . $id,
+            'progress' => 'required|integer|min:0|max:100',
+            'status' => 'required|string',
+            'priority' => 'required|string',
+            'milestone_name' => 'required|string',
+            'milestone_date' => 'nullable|date',
+            'milestone_status' => 'required|string',
+            'team_size' => 'required|integer|min:1',
+            'is_highlighted' => 'boolean'
+        ]);
+
+        $validated['is_highlighted'] = $request->has('is_highlighted');
+
+        $project->update($validated);
+
+        return redirect()->back()->with('success', 'Project node ZT-' . $project->node_id . ' updated successfully.');
+    }
+
+    public function destroy($id)
+    {
+        $project = Project::findOrFail($id);
+        $nodeId = $project->node_id;
+        $project->delete();
+
+        return redirect()->back()->with('success', 'Project node ZT-' . $nodeId . ' decommissioned and removed from system.');
+    }
 }
