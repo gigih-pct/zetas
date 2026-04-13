@@ -27,9 +27,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
             return view('dashboard.rab.index');
         })->name('dashboard.rab');
         
-        Route::get('/bahan', function () {
-            return view('dashboard.bahan.index');
-        })->name('dashboard.bahan');
+        Route::get('/bahan', [\App\Http\Controllers\InventoryController::class, 'index'])->name('dashboard.bahan');
+        Route::post('/bahan', [\App\Http\Controllers\InventoryController::class, 'store'])->name('dashboard.bahan.store');
+        Route::put('/bahan/{id}', [\App\Http\Controllers\InventoryController::class, 'update'])->name('dashboard.bahan.update');
+        Route::delete('/bahan/{id}', [\App\Http\Controllers\InventoryController::class, 'destroy'])->name('dashboard.bahan.destroy');
 
         Route::get('/harga-bahan', [\App\Http\Controllers\MaterialPriceController::class, 'index'])->name('dashboard.harga-bahan');
         Route::post('/harga-bahan', [\App\Http\Controllers\MaterialPriceController::class, 'store'])->name('dashboard.harga-bahan.store');
