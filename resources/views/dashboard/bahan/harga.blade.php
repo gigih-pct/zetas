@@ -79,7 +79,7 @@
                                 Rp {{ number_format($item->min_price, 0, ',', '.') }} - {{ number_format($item->max_price, 0, ',', '.') }}
                             </td>
                             <td class="px-8 md:px-12 py-5 md:py-6 text-right">
-                                <div class="flex items-center justify-end gap-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <div class="flex items-center justify-end gap-3 transition-opacity">
                                     <button 
                                         @click="openEdit({{ $item->toJson() }})"
                                         class="p-2 bg-black text-white hover:bg-construction-yellow hover:text-black rounded-lg transition-all shadow-heavy"
