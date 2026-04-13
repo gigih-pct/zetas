@@ -14,7 +14,7 @@ Route::get('/', [\App\Http\Controllers\LandingPageController::class, 'index'])->
 Route::middleware(['auth', 'verified'])->group(function () {
     
     // Overview / Beranda
-    Route::get('/dashboard', [\App\Http\Controllers\LandingPageController::class, 'index'])->name('dashboard.beranda');
+    Route::get('/dashboard', [\App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard.beranda');
 
     // Internal Modules
     Route::prefix('dashboard/internal')->group(function () {
