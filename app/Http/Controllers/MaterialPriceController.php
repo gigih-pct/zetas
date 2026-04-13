@@ -10,10 +10,26 @@ class MaterialPriceController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $groupedMaterials = MaterialPrice::all()->groupBy('category');
-        return view('dashboard.bahan.harga', compact('groupedMaterials'));
+        $query = MaterialPrice::query();
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('category', 'like', "%{$search}%");
+            });
+        }
+
+        if ($request->filled('category')) {
+            $query->where('category', $request->category);
+        }
+
+        $groupedMaterials = $query->orderBy('category')->get()->groupBy('category');
+        $categories = MaterialPrice::distinct()->pluck('category');
+
+        return view('dashboard.bahan.harga', compact('groupedMaterials', 'categories'));
     }
 
     /**
