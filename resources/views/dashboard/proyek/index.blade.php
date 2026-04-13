@@ -3,7 +3,15 @@
 @section('header', 'Architectural Log')
 
 @section('content')
-<div x-data="{ showCreateModal: false }" class="space-y-16 animate-in slide-in-from-right-10 duration-1000">
+<div x-data="{ 
+    showCreateModal: false, 
+    showEditModal: false, 
+    editingProject: {},
+    editProject(project) {
+        this.editingProject = project;
+        this.showEditModal = true;
+    }
+}" class="space-y-16 animate-in slide-in-from-right-10 duration-1000">
     
     @if(session('success'))
     <div class="fixed top-24 right-10 z-50 animate-in slide-in-from-right-10 duration-500">
@@ -39,34 +47,10 @@
         </button>
     </div>
 
-    <!-- Initialize Project Modal -->
-    <div 
-        x-show="showCreateModal" 
-        class="fixed inset-0 z-[60] flex items-center justify-center p-6 md:p-12 overflow-y-auto"
-        x-cloak
-    >
-        <div 
-            x-show="showCreateModal"
-            x-transition:enter="transition ease-out duration-300"
-            x-transition:enter-start="opacity-0"
-            x-transition:enter-end="opacity-100"
-            x-transition:leave="transition ease-in duration-200"
-            x-transition:leave-start="opacity-100"
-            x-transition:leave-end="opacity-0"
-            class="fixed inset-0 bg-black/80 backdrop-blur-sm"
-            @click="showCreateModal = false"
-        ></div>
-
-        <div 
-            x-show="showCreateModal"
-            x-transition:enter="transition ease-out duration-300 transform"
-            x-transition:enter-start="scale-95 opacity-0"
-            x-transition:enter-end="scale-100 opacity-100"
-            x-transition:leave="transition ease-in duration-200 transform"
-            x-transition:leave-start="scale-100 opacity-100"
-            x-transition:leave-end="scale-95 opacity-0"
-            class="bg-white border-4 border-black w-full max-w-4xl rounded-[48px] shadow-heavy relative z-10 overflow-hidden"
-        >
+    <!-- Initialize Project Modal (Create) -->
+    <div x-show="showCreateModal" class="fixed inset-0 z-[60] flex items-center justify-center p-6 md:p-12 overflow-y-auto" x-cloak>
+        <div x-show="showCreateModal" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 bg-black/80 backdrop-blur-sm" @click="showCreateModal = false"></div>
+        <div x-show="showCreateModal" x-transition:enter="transition ease-out duration-300 transform" x-transition:enter-start="scale-95 opacity-0" x-transition:enter-end="scale-100 opacity-100" x-transition:leave="transition ease-in duration-200 transform" x-transition:leave-start="scale-100 opacity-100" x-transition:leave-end="scale-95 opacity-0" class="bg-white border-4 border-black w-full max-w-4xl rounded-[48px] shadow-heavy relative z-10 overflow-hidden">
             <div class="bg-black p-8 md:p-10 flex justify-between items-center">
                 <div>
                     <h3 class="text-2xl font-black text-construction-yellow uppercase tracking-tighter">Initialize Project Node</h3>
@@ -76,22 +60,21 @@
                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                 </button>
             </div>
-
             <form action="{{ route('dashboard.proyek.store') }}" method="POST" class="p-8 md:p-12 space-y-10">
                 @csrf
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
                     <div class="space-y-6">
                         <div class="flex flex-col gap-2">
                             <label class="text-[10px] font-black uppercase tracking-widest text-black/40">Project Identification</label>
-                            <input type="text" name="name" required placeholder="e.g., Warehouse Jakarta" class="w-full px-6 py-4 bg-black/[0.03] border-2 border-black rounded-2xl focus:bg-construction-yellow/10 transition-all font-bold text-sm uppercase outline-none">
+                            <input type="text" name="name" required placeholder="e.g., Warehouse Jakarta" class="w-full px-6 py-4 bg-black/[0.03] border-2 border-black rounded-2xl transition-all font-bold text-sm uppercase outline-none">
                         </div>
                         <div class="flex flex-col gap-2">
                             <label class="text-[10px] font-black uppercase tracking-widest text-black/40">Operational Node ID</label>
-                            <input type="text" name="node_id" required placeholder="ZT-XXX" class="w-full px-6 py-4 bg-black/[0.03] border-2 border-black rounded-2xl focus:bg-construction-yellow/10 transition-all font-bold text-sm uppercase outline-none">
+                            <input type="text" name="node_id" required placeholder="ZT-XXX" class="w-full px-6 py-4 bg-black/[0.03] border-2 border-black rounded-2xl transition-all font-bold text-sm uppercase outline-none">
                         </div>
                         <div class="flex flex-col gap-2">
                             <label class="text-[10px] font-black uppercase tracking-widest text-black/40">Sector Category</label>
-                            <select name="sector" required class="w-full px-6 py-4 bg-black/[0.03] border-2 border-black rounded-2xl focus:bg-construction-yellow/10 transition-all font-bold text-sm uppercase outline-none appearance-none cursor-pointer">
+                            <select name="sector" required class="w-full px-6 py-4 bg-black/[0.03] border-2 border-black rounded-2xl transition-all font-bold text-sm uppercase outline-none appearance-none cursor-pointer">
                                 <option value="Jakarta">Jakarta Central</option>
                                 <option value="West Java">West Java Sector</option>
                                 <option value="Central Java">Central Java Sector</option>
@@ -101,31 +84,29 @@
                         </div>
                         <div class="flex flex-col gap-2">
                             <label class="text-[10px] font-black uppercase tracking-widest text-black/40">Logistics Address</label>
-                            <textarea name="address" required rows="3" class="w-full px-6 py-4 bg-black/[0.03] border-2 border-black rounded-2xl focus:bg-construction-yellow/10 transition-all font-bold text-sm uppercase outline-none resize-none"></textarea>
+                            <textarea name="address" required rows="3" class="w-full px-6 py-4 bg-black/[0.03] border-2 border-black rounded-2xl transition-all font-bold text-sm uppercase outline-none resize-none"></textarea>
                         </div>
                     </div>
-
                     <div class="space-y-6">
                         <div class="grid grid-cols-2 gap-6">
                             <div class="flex flex-col gap-2">
                                 <label class="text-[10px] font-black uppercase tracking-widest text-black/40">Init Progress %</label>
-                                <input type="number" name="progress" value="0" min="0" max="100" class="w-full px-6 py-4 bg-black/[0.03] border-2 border-black rounded-2xl transition-all font-bold text-sm outline-none">
+                                <input type="number" name="progress" value="0" min="0" max="100" class="w-full px-6 py-4 bg-black/[0.03] border-2 border-black rounded-2xl font-bold text-sm outline-none">
                             </div>
                             <div class="flex flex-col gap-2">
                                 <label class="text-[10px] font-black uppercase tracking-widest text-black/40">Team Size</label>
-                                <input type="number" name="team_size" value="1" min="1" class="w-full px-6 py-4 bg-black/[0.03] border-2 border-black rounded-2xl transition-all font-bold text-sm outline-none">
+                                <input type="number" name="team_size" value="1" min="1" class="w-full px-6 py-4 bg-black/[0.03] border-2 border-black rounded-2xl font-bold text-sm outline-none">
                             </div>
                         </div>
                         <div class="flex flex-col gap-2">
                             <label class="text-[10px] font-black uppercase tracking-widest text-black/40">Status Mode</label>
-                            <input type="text" name="status" required placeholder="e.g., Active Zone" class="w-full px-6 py-4 bg-black/[0.03] border-2 border-black rounded-2xl transition-all font-bold text-sm uppercase outline-none">
+                            <input type="text" name="status" required placeholder="e.g., Active Zone" class="w-full px-6 py-4 bg-black/[0.03] border-2 border-black rounded-2xl font-bold text-sm uppercase outline-none">
                         </div>
                         <div class="flex flex-col gap-2">
                             <label class="text-[10px] font-black uppercase tracking-widest text-black/40">System Priority</label>
-                            <input type="text" name="priority" required placeholder="e.g., Priority 01" class="w-full px-6 py-4 bg-black/[0.03] border-2 border-black rounded-2xl transition-all font-bold text-sm uppercase outline-none">
+                            <input type="text" name="priority" required placeholder="e.g., Priority 01" class="w-full px-6 py-4 bg-black/[0.03] border-2 border-black rounded-2xl font-bold text-sm uppercase outline-none">
                         </div>
                         <div class="p-6 bg-black/[0.03] border-2 border-dashed border-black/20 rounded-[32px] space-y-6">
-                            <p class="text-[9px] font-black uppercase tracking-widest text-black/40">Primary Milestone Index</p>
                             <input type="text" name="milestone_name" required placeholder="Entry Milestone Name" class="w-full bg-transparent border-b-2 border-black/10 py-2 font-black text-xs uppercase outline-none focus:border-black transition-colors">
                             <div class="grid grid-cols-2 gap-4">
                                 <input type="date" name="milestone_date" class="bg-transparent border-b-2 border-black/10 py-2 font-black text-xs uppercase outline-none focus:border-black transition-colors">
@@ -133,15 +114,95 @@
                             </div>
                         </div>
                         <div class="flex items-center gap-4 py-4 px-6 border-2 border-black rounded-2xl bg-black/[0.03]">
-                            <input type="checkbox" name="is_highlighted" id="is_highlighted" class="w-5 h-5 accent-black">
-                            <label for="is_highlighted" class="text-[10px] font-black uppercase tracking-widest cursor-pointer">Activate High-Contrast Style</label>
+                            <input type="checkbox" name="is_highlighted" id="create_is_highlighted" class="w-5 h-5 accent-black">
+                            <label for="create_is_highlighted" class="text-[10px] font-black uppercase tracking-widest cursor-pointer">Activate High-Contrast Style</label>
                         </div>
                     </div>
                 </div>
-
                 <div class="flex gap-6 pt-6">
                     <button type="button" @click="showCreateModal = false" class="flex-1 px-10 py-5 bg-white border-2 border-black rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-black hover:text-white transition-all">Abort</button>
                     <button type="submit" class="flex-[2] px-10 py-5 bg-black text-white rounded-2xl font-black text-[10px] uppercase tracking-[0.4em] hover:bg-construction-yellow hover:text-black transition-all shadow-heavy">Deploy Node</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Project Modal -->
+    <div x-show="showEditModal" class="fixed inset-0 z-[60] flex items-center justify-center p-6 md:p-12 overflow-y-auto" x-cloak>
+        <div x-show="showEditModal" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 bg-black/80 backdrop-blur-sm" @click="showEditModal = false"></div>
+        <div x-show="showEditModal" x-transition:enter="transition ease-out duration-300 transform" x-transition:enter-start="scale-95 opacity-0" x-transition:enter-end="scale-100 opacity-100" x-transition:leave="transition ease-in duration-200 transform" x-transition:leave-start="scale-100 opacity-100" x-transition:leave-end="scale-95 opacity-0" class="bg-white border-4 border-black w-full max-w-4xl rounded-[48px] shadow-heavy relative z-10 overflow-hidden">
+            <div class="bg-construction-yellow p-8 md:p-10 flex justify-between items-center">
+                <div>
+                    <h3 class="text-2xl font-black text-black uppercase tracking-tighter">Modify Project Node</h3>
+                    <p class="text-[9px] font-black text-black/40 uppercase tracking-[0.4em] mt-2">Adjusting Live Site Coordinates — Node ID: <span x-text="editingProject.node_id"></span></p>
+                </div>
+                <button @click="showEditModal = false" class="text-black/40 hover:text-black transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+            <form :action="`/dashboard/internal/proyek/${editingProject.id}`" method="POST" class="p-8 md:p-12 space-y-10">
+                @csrf
+                @method('PUT')
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                    <div class="space-y-6">
+                        <div class="flex flex-col gap-2">
+                            <label class="text-[10px] font-black uppercase tracking-widest text-black/40">Project Identification</label>
+                            <input type="text" name="name" x-model="editingProject.name" required class="w-full px-6 py-4 bg-black/[0.03] border-2 border-black rounded-2xl transition-all font-bold text-sm uppercase outline-none">
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <label class="text-[10px] font-black uppercase tracking-widest text-black/40">Operational Node ID</label>
+                            <input type="text" name="node_id" x-model="editingProject.node_id" required class="w-full px-6 py-4 bg-black/[0.03] border-2 border-black rounded-2xl transition-all font-bold text-sm uppercase outline-none">
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <label class="text-[10px] font-black uppercase tracking-widest text-black/40">Sector Category</label>
+                            <select name="sector" x-model="editingProject.sector" required class="w-full px-6 py-4 bg-black/[0.03] border-2 border-black rounded-2xl transition-all font-bold text-sm uppercase outline-none appearance-none cursor-pointer">
+                                <option value="Jakarta">Jakarta Central</option>
+                                <option value="West Java">West Java Sector</option>
+                                <option value="Central Java">Central Java Sector</option>
+                                <option value="Sumatera">Sumatera Hub</option>
+                                <option value="Kalimantan">Kalimantan Hub</option>
+                            </select>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <label class="text-[10px] font-black uppercase tracking-widest text-black/40">Logistics Address</label>
+                            <textarea name="address" x-model="editingProject.address" required rows="3" class="w-full px-6 py-4 bg-black/[0.03] border-2 border-black rounded-2xl transition-all font-bold text-sm uppercase outline-none resize-none"></textarea>
+                        </div>
+                    </div>
+                    <div class="space-y-6">
+                        <div class="grid grid-cols-2 gap-6">
+                            <div class="flex flex-col gap-2">
+                                <label class="text-[10px] font-black uppercase tracking-widest text-black/40">Progress %</label>
+                                <input type="number" name="progress" x-model="editingProject.progress" min="0" max="100" class="w-full px-6 py-4 bg-black/[0.03] border-2 border-black rounded-2xl font-bold text-sm outline-none">
+                            </div>
+                            <div class="flex flex-col gap-2">
+                                <label class="text-[10px] font-black uppercase tracking-widest text-black/40">Team Size</label>
+                                <input type="number" name="team_size" x-model="editingProject.team_size" min="1" class="w-full px-6 py-4 bg-black/[0.03] border-2 border-black rounded-2xl font-bold text-sm outline-none">
+                            </div>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <label class="text-[10px] font-black uppercase tracking-widest text-black/40">Status Mode</label>
+                            <input type="text" name="status" x-model="editingProject.status" required class="w-full px-6 py-4 bg-black/[0.03] border-2 border-black rounded-2xl font-bold text-sm uppercase outline-none">
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <label class="text-[10px] font-black uppercase tracking-widest text-black/40">System Priority</label>
+                            <input type="text" name="priority" x-model="editingProject.priority" required class="w-full px-6 py-4 bg-black/[0.03] border-2 border-black rounded-2xl font-bold text-sm uppercase outline-none">
+                        </div>
+                        <div class="p-6 bg-black/[0.03] border-2 border-dashed border-black/20 rounded-[32px] space-y-4">
+                            <input type="text" name="milestone_name" x-model="editingProject.milestone_name" required placeholder="Milestone Name" class="w-full bg-transparent border-b-2 border-black/10 py-2 font-black text-xs uppercase outline-none focus:border-black transition-colors">
+                            <div class="grid grid-cols-2 gap-4">
+                                <input type="date" name="milestone_date" x-model="editingProject.milestone_date" class="bg-transparent border-b-2 border-black/10 py-2 font-black text-xs uppercase outline-none focus:border-black transition-colors">
+                                <input type="text" name="milestone_status" x-model="editingProject.milestone_status" class="bg-transparent border-b-2 border-black/10 py-2 font-black text-xs uppercase outline-none focus:border-black transition-colors">
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4 py-4 px-6 border-2 border-black rounded-2xl bg-black/[0.03]">
+                            <input type="checkbox" name="is_highlighted" id="edit_is_highlighted" x-model="editingProject.is_highlighted" class="w-5 h-5 accent-black">
+                            <label for="edit_is_highlighted" class="text-[10px] font-black uppercase tracking-widest cursor-pointer">High-Contrast Style</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex gap-6 pt-6">
+                    <button type="button" @click="showEditModal = false" class="flex-1 px-10 py-5 bg-white border-2 border-black rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-black hover:text-white transition-all">Cancel</button>
+                    <button type="submit" class="flex-[2] px-10 py-5 bg-construction-yellow text-black border-2 border-black rounded-2xl font-black text-[10px] uppercase tracking-[0.4em] hover:bg-black hover:text-white transition-all shadow-heavy">Update Node</button>
                 </div>
             </form>
         </div>
@@ -189,9 +250,23 @@
                                 <span class="text-[10px] font-bold {{ $project->is_highlighted ? 'text-white/40' : 'text-black/40' }} uppercase tracking-widest">{{ $project->address }}</span>
                             </div>
                         </div>
-                        <div class="flex gap-4">
-                            <div class="px-6 py-2 border-2 {{ $project->is_highlighted ? 'border-white/20 text-construction-yellow' : 'border-black text-black' }} rounded-xl text-[9px] font-black uppercase tracking-widest">{{ $project->status }}</div>
-                            <div class="px-6 py-2 {{ $project->is_highlighted ? 'bg-construction-yellow text-black' : 'bg-black text-white' }} rounded-xl text-[9px] font-black uppercase tracking-widest">{{ $project->priority }}</div>
+                        <div class="flex items-start gap-4">
+                            <div class="flex gap-2">
+                                <button @click="editProject({{ json_encode($project) }})" class="p-3 bg-black/[0.05] hover:bg-construction-yellow hover:text-black rounded-xl transition-all {{ $project->is_highlighted ? 'text-white' : 'text-black' }}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                                </button>
+                                <form action="{{ route('dashboard.proyek.destroy', $project->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to decommission this project node?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="p-3 bg-black/[0.05] hover:bg-red-500 hover:text-white rounded-xl transition-all {{ $project->is_highlighted ? 'text-white' : 'text-black' }}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                                    </button>
+                                </form>
+                            </div>
+                            <div class="flex flex-col gap-2">
+                                <div class="px-6 py-2 border-2 {{ $project->is_highlighted ? 'border-white/20 text-construction-yellow' : 'border-black text-black' }} rounded-xl text-[9px] font-black uppercase tracking-widest">{{ $project->status }}</div>
+                                <div class="px-6 py-2 {{ $project->is_highlighted ? 'bg-construction-yellow text-black' : 'bg-black text-white' }} rounded-xl text-[9px] font-black uppercase tracking-widest">{{ $project->priority }}</div>
+                            </div>
                         </div>
                     </div>
 
