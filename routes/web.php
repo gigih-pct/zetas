@@ -31,7 +31,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         })->name('dashboard.bahan');
 
         Route::get('/harga-bahan', function () {
-            return view('dashboard.bahan.harga');
+            $groupedMaterials = \App\Models\MaterialPrice::all()->groupBy('category');
+            return view('dashboard.bahan.harga', compact('groupedMaterials'));
         })->name('dashboard.harga-bahan');
 
         Route::get('/armada', function () {
