@@ -12,9 +12,11 @@
         building_type: 'Gudang Industri (Warehouse)',
         building_area: 1200,
         quality_level: 'Standar (Medium)',
-        location: 'Jakarta Barat',
-        project_name: 'Proyek Baru'
+        location: 'Yogyakarta',
+        project_name: 'Proyek Baru Yogyakarta',
+        region_id: '{{ $regions->where('name', 'DI Yogyakarta')->first()->id ?? '' }}'
     },
+    aiSource: 'ai',
     message: '',
     async calculate() { 
         this.aiStep = 2; 
@@ -22,6 +24,7 @@
             const response = await axios.post('{{ route('dashboard.rab.ai-calculate') }}', this.form);
             if (response.data.status === 'success') {
                 this.aiData = response.data.data;
+                this.aiSource = response.data.source || 'ai';
                 this.aiStep = 3;
             } else {
                 alert('Gagal: ' + response.data.message);
@@ -259,7 +262,16 @@
                         </select>
                     </div>
                     <div>
-                        <label class="block text-[10px] font-black uppercase tracking-widest mb-3">Lokasi Proyek</label>
+                        <label class="block text-[10px] font-black uppercase tracking-widest mb-3">Wilayah Utama</label>
+                        <select x-model="form.region_id" class="w-full bg-black/[0.03] border-2 border-black/10 focus:border-black rounded-xl px-5 py-4 text-xs font-bold outline-none transition-all">
+                            <option value="">Pilih Wilayah...</option>
+                            @foreach($regions as $region)
+                                <option value="{{ $region->id }}">{{ $region->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-black uppercase tracking-widest mb-3">Lokasi Proyek Spesifik</label>
                         <input x-model="form.location" type="text" class="w-full bg-black/[0.03] border-2 border-black/10 focus:border-black rounded-xl px-5 py-4 text-xs font-bold outline-none transition-all">
                     </div>
                 </div>
@@ -315,8 +327,9 @@
                         <p class="text-[10px] font-black uppercase tracking-[0.3em] text-black/40 mt-1">Estimasi Generasi Algoritma AI Gemini</p>
                     </div>
                     <div class="text-right">
-                        <p class="text-[9px] font-black uppercase tracking-widest text-construction-yellow px-3 py-1 bg-black rounded-lg inline-block mb-1">Doc Code: AI-RAB-092X</p>
-                        <p class="text-[10px] font-bold uppercase text-black/60">Tgl: {{ date('d M Y') }}</p>
+                        <p class="text-[9px] font-black uppercase tracking-widest text-white px-3 py-1 bg-blue-600 rounded-lg inline-block mb-1" x-show="aiSource === 'ai'">Source: Gemini AI Progresif</p>
+                        <p class="text-[9px] font-black uppercase tracking-widest text-black px-3 py-1 bg-construction-yellow rounded-lg inline-block mb-1" x-show="aiSource === 'fallback'">Source: Algoritma Standar (Fallback)</p>
+                        <p class="text-[10px] font-bold uppercase text-black/60 block">Tgl: {{ date('d M Y') }}</p>
                     </div>
                 </div>
 
@@ -361,8 +374,12 @@
                                 <td colspan="5" class="py-4 px-4 text-right border-l border-black/5">Total Pekerjaan</td>
                                 <td class="py-4 px-4 text-right border-l border-black/5" x-text="new Intl.NumberFormat('id-ID').format(aiData.grand_total)"></td>
                             </tr>
+                            <tr class="font-black uppercase text-xs text-blue-600 bg-blue-50">
+                                <td colspan="5" class="py-3 px-4 text-right border-l border-black/5">Referensi Harga Tanah (Info)</td>
+                                <td class="py-3 px-4 text-right border-l border-black/5" x-text="aiData.land_reference"></td>
+                            </tr>
                             <tr class="font-black uppercase text-xs text-black/60">
-                                <td colspan="5" class="py-3 px-4 text-right border-l border-black/5">Catatan AI</td>
+                                <td colspan="5" class="py-3 px-4 text-right border-l border-black/5">Catatan AI (Analisis Material)</td>
                                 <td class="py-3 px-4 text-right border-l border-black/5" x-text="aiData.notes"></td>
                             </tr>
                             <tr class="bg-black text-construction-yellow font-black uppercase text-sm">

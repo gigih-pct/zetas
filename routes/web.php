@@ -24,7 +24,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::delete('/proyek/{id}', [\App\Http\Controllers\ProjectController::class, 'destroy'])->name('dashboard.proyek.destroy');
 
         Route::get('/rab', function () {
-            return view('dashboard.rab.index');
+            $regions = \App\Models\Region::all();
+            return view('dashboard.rab.index', compact('regions'));
         })->name('dashboard.rab');
         Route::post('/rab/ai-calculate', [\App\Http\Controllers\AiRabController::class, 'calculate'])->name('dashboard.rab.ai-calculate');
         Route::post('/rab/ai-store', [\App\Http\Controllers\AiRabController::class, 'store'])->name('dashboard.rab.ai-store');
