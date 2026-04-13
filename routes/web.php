@@ -9,12 +9,12 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
+Route::get('/', [\App\Http\Controllers\LandingPageController::class, 'index'])->name('landing');
+
 Route::middleware(['auth', 'verified'])->group(function () {
     
     // Overview / Beranda
-    Route::get('/', function () {
-        return view('dashboard.beranda.index');
-    })->name('dashboard.beranda');
+    Route::get('/dashboard', [\App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard.beranda');
 
     // Internal Modules
     Route::prefix('dashboard/internal')->group(function () {
@@ -39,9 +39,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::put('/harga-bahan/{id}', [\App\Http\Controllers\MaterialPriceController::class, 'update'])->name('dashboard.harga-bahan.update');
         Route::delete('/harga-bahan/{id}', [\App\Http\Controllers\MaterialPriceController::class, 'destroy'])->name('dashboard.harga-bahan.destroy');
 
-        Route::get('/armada', function () {
-            return view('dashboard.armada.index');
-        })->name('dashboard.armada');
+        Route::get('/armada', [\App\Http\Controllers\FleetController::class, 'index'])->name('dashboard.armada');
+        Route::post('/armada', [\App\Http\Controllers\FleetController::class, 'store'])->name('dashboard.armada.store');
+        Route::put('/armada/{id}', [\App\Http\Controllers\FleetController::class, 'update'])->name('dashboard.armada.update');
+        Route::delete('/armada/{id}', [\App\Http\Controllers\FleetController::class, 'destroy'])->name('dashboard.armada.destroy');
 
         Route::get('/pekerja', [\App\Http\Controllers\WorkerController::class, 'index'])->name('dashboard.pekerja');
         Route::post('/pekerja', [\App\Http\Controllers\WorkerController::class, 'store'])->name('dashboard.pekerja.store');
