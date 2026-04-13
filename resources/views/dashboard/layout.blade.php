@@ -16,9 +16,20 @@
             background-color: #FFCD00;
             color: #000;
         }
+        .noise-bg {
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.015;
+            pointer-events: none;
+        }
+        .matrix-pattern {
+            background-image: radial-gradient(circle, #000 0.5px, transparent 0.5px);
+            background-size: 15px 15px;
+        }
     </style>
 </head>
-<body class="bg-white text-black font-sans antialiased selection:bg-construction-yellow selection:text-black" x-data="{ mobileMenuOpen: false, userDropdownOpen: false }">
+<body class="bg-white text-black font-sans antialiased selection:bg-construction-yellow selection:text-black overflow-x-hidden" x-data="{ mobileMenuOpen: false, userDropdownOpen: false }">
+    <!-- Artisanal Texture Layer -->
+    <div class="fixed inset-0 noise-bg z-[100]"></div>
     <div class="flex min-h-screen relative">
         <!-- Mobile Sidebar Overlay -->
         <div 
