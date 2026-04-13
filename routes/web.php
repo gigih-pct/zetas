@@ -26,6 +26,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/rab', function () {
             return view('dashboard.rab.index');
         })->name('dashboard.rab');
+        Route::post('/rab/ai-calculate', [\App\Http\Controllers\AiRabController::class, 'calculate'])->name('dashboard.rab.ai-calculate');
+        Route::post('/rab/ai-store', [\App\Http\Controllers\AiRabController::class, 'store'])->name('dashboard.rab.ai-store');
         
         Route::get('/bahan', [\App\Http\Controllers\InventoryController::class, 'index'])->name('dashboard.bahan');
         Route::post('/bahan', [\App\Http\Controllers\InventoryController::class, 'store'])->name('dashboard.bahan.store');

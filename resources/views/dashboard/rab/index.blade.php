@@ -3,7 +3,56 @@
 @section('header', 'Audit Matrix v.4')
 
 @section('content')
-<div x-data="{ aiOpen: false, aiStep: 1, calculate() { this.aiStep = 2; setTimeout(() => { this.aiStep = 3; }, 3000); } }" class="space-y-12 animate-in fade-in duration-1000">
+<div x-data="{ 
+    aiOpen: false, 
+    aiStep: 1, 
+    aiLoading: false,
+    aiData: { items: [], grand_total: 0, notes: '' },
+    form: {
+        building_type: 'Gudang Industri (Warehouse)',
+        building_area: 1200,
+        quality_level: 'Standar (Medium)',
+        location: 'Jakarta Barat',
+        project_name: 'Proyek Baru'
+    },
+    message: '',
+    async calculate() { 
+        this.aiStep = 2; 
+        try {
+            const response = await axios.post('{{ route('dashboard.rab.ai-calculate') }}', this.form);
+            if (response.data.status === 'success') {
+                this.aiData = response.data.data;
+                this.aiStep = 3;
+            } else {
+                alert('Gagal: ' + response.data.message);
+                this.aiStep = 1;
+            }
+        } catch (e) {
+            console.error(e);
+            alert('Terjadi kesalahan saat menghubungi AI Gemini.');
+            this.aiStep = 1;
+        }
+    },
+    async saveToDatabase() {
+        try {
+            const payload = {
+                ...this.form,
+                data_breakdown: this.aiData.items,
+                total_budget: this.aiData.grand_total,
+                status: 'saved'
+            };
+            const response = await axios.post('{{ route('dashboard.rab.ai-store') }}', payload);
+            if (response.data.status === 'success') {
+                alert('RAB berhasil disimpan ke database!');
+                this.aiOpen = false;
+                window.location.reload();
+            }
+        } catch (e) {
+            console.error(e);
+            alert('Gagal menyimpan ke database.');
+        }
+    }
+}" class="space-y-12 animate-in fade-in duration-1000">
     <!-- Matrix Header -->
     <div class="flex flex-col xl:flex-row justify-between items-start xl:items-center gap-10">
         <div class="flex gap-10 items-center">
@@ -190,19 +239,20 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div>
                         <label class="block text-[10px] font-black uppercase tracking-widest mb-3">Tipe Pembangunan</label>
-                        <select class="w-full bg-black/[0.03] border-2 border-black/10 focus:border-black rounded-xl px-5 py-4 text-xs font-bold outline-none transition-all">
+                        <select x-model="form.building_type" class="w-full bg-black/[0.03] border-2 border-black/10 focus:border-black rounded-xl px-5 py-4 text-xs font-bold outline-none transition-all">
                             <option>Gudang Industri (Warehouse)</option>
                             <option>Kantor Komersial</option>
                             <option>Perumahan (Residensial)</option>
+                            <option>Jembatan / Infrastruktur</option>
                         </select>
                     </div>
                     <div>
                         <label class="block text-[10px] font-black uppercase tracking-widest mb-3">Luas Bangunan (m2)</label>
-                        <input type="number" value="1200" class="w-full bg-black/[0.03] border-2 border-black/10 focus:border-black rounded-xl px-5 py-4 text-xs font-bold outline-none transition-all">
+                        <input x-model="form.building_area" type="number" class="w-full bg-black/[0.03] border-2 border-black/10 focus:border-black rounded-xl px-5 py-4 text-xs font-bold outline-none transition-all">
                     </div>
                     <div>
                         <label class="block text-[10px] font-black uppercase tracking-widest mb-3">Tingkat Kualitas Material</label>
-                        <select class="w-full bg-black/[0.03] border-2 border-black/10 focus:border-black rounded-xl px-5 py-4 text-xs font-bold outline-none transition-all">
+                        <select x-model="form.quality_level" class="w-full bg-black/[0.03] border-2 border-black/10 focus:border-black rounded-xl px-5 py-4 text-xs font-bold outline-none transition-all">
                             <option>Premium (Heavy Duty)</option>
                             <option>Standar (Medium)</option>
                             <option>Ekonomis</option>
@@ -210,7 +260,7 @@
                     </div>
                     <div>
                         <label class="block text-[10px] font-black uppercase tracking-widest mb-3">Lokasi Proyek</label>
-                        <input type="text" value="Jakarta Barat" class="w-full bg-black/[0.03] border-2 border-black/10 focus:border-black rounded-xl px-5 py-4 text-xs font-bold outline-none transition-all">
+                        <input x-model="form.location" type="text" class="w-full bg-black/[0.03] border-2 border-black/10 focus:border-black rounded-xl px-5 py-4 text-xs font-bold outline-none transition-all">
                     </div>
                 </div>
 
@@ -273,11 +323,11 @@
                 <div class="mb-8 grid grid-cols-2 gap-4 text-xs font-bold uppercase tracking-widest bg-black/[0.02] p-6 border-2 border-black/10 rounded-2xl">
                     <div>
                         <span class="text-black/40 block mb-1">Nama Proyek:</span>
-                        <span class="text-black font-black">Konstruksi Industrial AI (Dummy)</span>
+                        <input type="text" x-model="form.project_name" class="bg-transparent border-none p-0 text-black font-black focus:ring-0 w-full" placeholder="Masukkan Nama Proyek...">
                     </div>
                     <div>
                         <span class="text-black/40 block mb-1">Lokasi Dasar:</span>
-                        <span class="text-black font-black">Jakarta Barat</span>
+                        <span class="text-black font-black" x-text="form.location"></span>
                     </div>
                 </div>
 
@@ -295,33 +345,29 @@
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-black/10">
-                            <!-- Group 1 -->
-                            <tr class="bg-black/[0.04]"><td colspan="6" class="py-3 px-4 font-black uppercase tracking-widest">I. Pekerjaan Persiapan</td></tr>
-                            <tr class="hover:bg-black/[0.02] transition-colors"><td class="py-3 px-4 text-center">1</td><td class="py-3 px-4 font-bold border-l border-black/5">Pembersihan & Pengukuran Lahan</td><td class="py-3 px-4 text-center border-l border-black/5">Ls</td><td class="py-3 px-4 text-center border-l border-black/5">1.00</td><td class="py-3 px-4 text-right border-l border-black/5">5.500.000</td><td class="py-3 px-4 text-right font-black border-l border-black/5">5.500.000</td></tr>
-                            <tr class="hover:bg-black/[0.02] transition-colors"><td class="py-3 px-4 text-center">2</td><td class="py-3 px-4 font-bold border-l border-black/5">Pembuatan Direksi Keet & Gudang</td><td class="py-3 px-4 text-center border-l border-black/5">m2</td><td class="py-3 px-4 text-center border-l border-black/5">24.00</td><td class="py-3 px-4 text-right border-l border-black/5">1.350.000</td><td class="py-3 px-4 text-right font-black border-l border-black/5">32.400.000</td></tr>
-                            
-                            <!-- Group 2 -->
-                            <tr class="bg-black/[0.04]"><td colspan="6" class="py-3 px-4 font-black uppercase tracking-widest border-t-2 border-black/10">II. Pekerjaan Tanah & Pondasi</td></tr>
-                            <tr class="hover:bg-black/[0.02] transition-colors"><td class="py-3 px-4 text-center">1</td><td class="py-3 px-4 font-bold border-l border-black/5">Galian Tanah Mesin</td><td class="py-3 px-4 text-center border-l border-black/5">m3</td><td class="py-3 px-4 text-center border-l border-black/5">120.00</td><td class="py-3 px-4 text-right border-l border-black/5">85.000</td><td class="py-3 px-4 text-right font-black border-l border-black/5">10.200.000</td></tr>
-                            <tr class="hover:bg-black/[0.02] transition-colors"><td class="py-3 px-4 text-center">2</td><td class="py-3 px-4 font-bold border-l border-black/5">Pondasi Tiang Pancang (Spun Pile)</td><td class="py-3 px-4 text-center border-l border-black/5">m1</td><td class="py-3 px-4 text-center border-l border-black/5">450.00</td><td class="py-3 px-4 text-right border-l border-black/5">320.000</td><td class="py-3 px-4 text-right font-black border-l border-black/5">144.000.000</td></tr>
-                            
-                            <!-- Group 3 -->
-                            <tr class="bg-black/[0.04]"><td colspan="6" class="py-3 px-4 font-black uppercase tracking-widest border-t-2 border-black/10">III. Pekerjaan Struktur Atas</td></tr>
-                            <tr class="hover:bg-black/[0.02] transition-colors"><td class="py-3 px-4 text-center">1</td><td class="py-3 px-4 font-bold border-l border-black/5">Beton Bertulang K-300 (Slump 12)</td><td class="py-3 px-4 text-center border-l border-black/5">m3</td><td class="py-3 px-4 text-center border-l border-black/5">68.00</td><td class="py-3 px-4 text-right border-l border-black/5">4.200.000</td><td class="py-3 px-4 text-right font-black border-l border-black/5">285.600.000</td></tr>
-                            <tr class="hover:bg-black/[0.02] transition-colors"><td class="py-3 px-4 text-center">2</td><td class="py-3 px-4 font-bold border-l border-black/5">Baja Profil WF (Konstruksi Utama)</td><td class="py-3 px-4 text-center border-l border-black/5">kg</td><td class="py-3 px-4 text-center border-l border-black/5">8500.0</td><td class="py-3 px-4 text-right border-l border-black/5">28.500</td><td class="py-3 px-4 text-right font-black border-l border-black/5">242.250.000</td></tr>
+                            <template x-for="item in aiData.items" :key="item.no">
+                                <tr class="hover:bg-black/[0.02] transition-colors">
+                                    <td class="py-3 px-4 text-center" x-text="item.no"></td>
+                                    <td class="py-3 px-4 font-bold border-l border-black/5" x-text="item.description"></td>
+                                    <td class="py-3 px-4 text-center border-l border-black/5" x-text="item.unit"></td>
+                                    <td class="py-3 px-4 text-center border-l border-black/5" x-text="item.volume"></td>
+                                    <td class="py-3 px-4 text-right border-l border-black/5" x-text="new Intl.NumberFormat('id-ID').format(item.unit_price)"></td>
+                                    <td class="py-3 px-4 text-right font-black border-l border-black/5" x-text="new Intl.NumberFormat('id-ID').format(item.total_price)"></td>
+                                </tr>
+                            </template>
                             
                             <!-- Totals -->
                             <tr class="border-t-4 border-black font-black uppercase text-xs">
-                                <td colspan="5" class="py-4 px-4 text-right border-l border-black/5">Total Pekerjaan (A+B+C)</td>
-                                <td class="py-4 px-4 text-right border-l border-black/5">719.950.000</td>
+                                <td colspan="5" class="py-4 px-4 text-right border-l border-black/5">Total Pekerjaan</td>
+                                <td class="py-4 px-4 text-right border-l border-black/5" x-text="new Intl.NumberFormat('id-ID').format(aiData.grand_total)"></td>
                             </tr>
                             <tr class="font-black uppercase text-xs text-black/60">
-                                <td colspan="5" class="py-3 px-4 text-right border-l border-black/5">PPN 11%</td>
-                                <td class="py-3 px-4 text-right border-l border-black/5">79.194.500</td>
+                                <td colspan="5" class="py-3 px-4 text-right border-l border-black/5">Catatan AI</td>
+                                <td class="py-3 px-4 text-right border-l border-black/5" x-text="aiData.notes"></td>
                             </tr>
                             <tr class="bg-black text-construction-yellow font-black uppercase text-sm">
                                 <td colspan="5" class="py-5 px-4 text-right border-l border-white/20">Grand Total RAB Estimasi</td>
-                                <td class="py-5 px-4 text-right border-l border-white/20">Rp 799.144.500</td>
+                                <td class="py-5 px-4 text-right border-l border-white/20">Rp <span x-text="new Intl.NumberFormat('id-ID').format(aiData.grand_total)"></span></td>
                             </tr>
                         </tbody>
                     </table>
@@ -334,7 +380,7 @@
                             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
                             Download PDF
                         </button>
-                        <button @click="aiOpen = false" class="px-8 py-4 bg-construction-yellow text-black border-2 border-black font-black uppercase tracking-widest rounded-xl hover:bg-black hover:text-construction-yellow shadow-apple transition-all text-[10px]">
+                        <button @click="saveToDatabase()" class="px-8 py-4 bg-construction-yellow text-black border-2 border-black font-black uppercase tracking-widest rounded-xl hover:bg-black hover:text-construction-yellow shadow-apple transition-all text-[10px]">
                             Simpan ke Database
                         </button>
                     </div>
