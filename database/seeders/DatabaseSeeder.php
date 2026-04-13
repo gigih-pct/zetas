@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             MaterialPriceSeeder::class,
             ProjectSeeder::class,
             InventorySeeder::class,
+            WorkerSeeder::class,
         ]);
 
         User::factory()->create([
