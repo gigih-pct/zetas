@@ -30,10 +30,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
             return view('dashboard.bahan.index');
         })->name('dashboard.bahan');
 
-        Route::get('/harga-bahan', function () {
-            $groupedMaterials = \App\Models\MaterialPrice::all()->groupBy('category');
-            return view('dashboard.bahan.harga', compact('groupedMaterials'));
-        })->name('dashboard.harga-bahan');
+        Route::get('/harga-bahan', [\App\Http\Controllers\MaterialPriceController::class, 'index'])->name('dashboard.harga-bahan');
+        Route::post('/harga-bahan', [\App\Http\Controllers\MaterialPriceController::class, 'store'])->name('dashboard.harga-bahan.store');
+        Route::put('/harga-bahan/{id}', [\App\Http\Controllers\MaterialPriceController::class, 'update'])->name('dashboard.harga-bahan.update');
+        Route::delete('/harga-bahan/{id}', [\App\Http\Controllers\MaterialPriceController::class, 'destroy'])->name('dashboard.harga-bahan.destroy');
 
         Route::get('/armada', function () {
             return view('dashboard.armada.index');
