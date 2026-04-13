@@ -19,6 +19,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Internal Modules
     Route::prefix('dashboard/internal')->group(function () {
         Route::get('/proyek', [\App\Http\Controllers\ProjectController::class, 'index'])->name('dashboard.proyek');
+        Route::post('/proyek', [\App\Http\Controllers\ProjectController::class, 'store'])->name('dashboard.proyek.store');
 
         Route::get('/rab', function () {
             return view('dashboard.rab.index');
