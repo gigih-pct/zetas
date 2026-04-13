@@ -48,6 +48,11 @@
             <span>Inventaris Bahan</span>
         </a>
 
+        <a href="{{ route('dashboard.harga-bahan') }}" class="{{ $navItemClass }} {{ $currentRoute == 'dashboard.harga-bahan' ? $activeClass : $inactiveClass }}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="transition-transform group-hover:scale-110"><path d="M12 2v20"></path><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+            <span>List Harga Bahan</span>
+        </a>
+
         <div class="pt-6 md:pt-10 pb-2 md:pb-3 px-4 text-[9px] md:text-[10px] font-bold text-white/20 uppercase tracking-[0.2em]">Aset & SDM</div>
 
         <a href="{{ route('dashboard.armada') }}" class="{{ $navItemClass }} {{ $currentRoute == 'dashboard.armada' ? $activeClass : $inactiveClass }}">
