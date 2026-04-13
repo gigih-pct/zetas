@@ -1,104 +1,93 @@
 @extends('dashboard.layout')
 
-@section('header', 'Manajemen Armada & Alat Berat')
+@section('header', 'Fleet Control v.2')
 
 @section('content')
-<div class="space-y-10 md:space-y-16 animate-in slide-in-from-right-10 duration-1000">
-    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end border-b-2 border-black pb-6 md:pb-8 gap-6">
-        <div>
-            <h3 class="text-3xl md:text-4xl font-black tracking-tighter text-black uppercase">Technical Assets</h3>
-            <p class="text-[9px] md:text-[10px] font-black text-black/30 uppercase tracking-[0.3em] mt-2 md:mt-3">Heavy Machinery Intelligence</p>
-        </div>
-        <div class="flex gap-8 w-full sm:w-auto sm:text-right">
-            <div class="text-left sm:text-right">
-                <p class="text-[8px] md:text-[9px] font-black text-black/20 uppercase tracking-[0.3em]">Unit Efficiency</p>
-                <p class="text-xl md:text-2xl font-black text-black italic uppercase underline decoration-construction-yellow decoration-4 underline-offset-8">84% Optimal</p>
+<div class="space-y-16 animate-in slide-in-from-bottom-10 duration-1000">
+    <!-- Fleet Header Area -->
+    <div class="flex flex-col xl:flex-row justify-between items-start xl:items-center gap-10">
+        <div class="flex items-center gap-8">
+            <div class="px-6 py-12 bg-black rounded-[48px] text-construction-yellow flex flex-col items-center justify-center shadow-heavy border-4 border-black group">
+                <span class="text-[10px] font-black uppercase tracking-[0.4em] mb-4 opacity-30">Active</span>
+                <span class="text-6xl font-black tabular-nums tracking-tighter">15</span>
+            </div>
+            <div>
+                <h3 class="text-4xl font-black uppercase tracking-tighter text-black leading-none">Armada & Equipment Master</h3>
+                <p class="text-[10px] font-black text-black/30 uppercase tracking-[0.5em] mt-4 flex items-center gap-4">
+                    <span class="w-2 h-2 rounded-full bg-green-500"></span>
+                    Operational Monitoring Hub
+                </p>
             </div>
         </div>
-    </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
-        <!-- Machine Card: Strict Industrial -->
-        <div class="bg-white rounded-[32px] md:rounded-[40px] border-2 border-black p-8 md:p-12 group hover:shadow-heavy transition-all duration-500 relative overflow-hidden">
-            <div class="flex justify-between items-start mb-8 md:mb-12">
-                <div class="w-16 h-16 md:w-20 md:h-20 bg-black rounded-2xl md:rounded-3xl flex items-center justify-center shadow-xl group-hover:bg-construction-yellow transition-colors duration-500 border-2 border-black">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FFCD00" stroke-width="3" class="md:w-8 md:h-8 group-hover:stroke-black transition-colors"><path d="M1 3h15v13H1z"></path><path d="M16 8h4l3 3v5h-7V8z"></path><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+        
+        <div class="w-full xl:w-auto flex flex-col sm:flex-row gap-6">
+            <div class="bg-white border-2 border-black p-8 rounded-[40px] flex items-center gap-8 shadow-heavy transition-all hover:bg-black group">
+                <div class="hidden sm:block">
+                    <span class="text-[8px] font-black text-black/30 group-hover:text-white/30 uppercase tracking-[0.4em]">Fleet Health</span>
+                    <div class="flex gap-1 mt-2">
+                        @for($i=0; $i<8; $i++)
+                            <div class="w-1.5 h-4 bg-green-500 rounded-full"></div>
+                        @endfor
+                        <div class="w-1.5 h-4 bg-black/10 rounded-full"></div>
+                    </div>
                 </div>
-                <div class="flex flex-col items-end gap-1 md:gap-2">
-                    <span class="px-3 md:px-4 py-1.5 bg-black text-white text-[8px] md:text-[9px] font-black rounded-lg uppercase tracking-[0.1em] md:tracking-[0.2em] group-hover:bg-construction-yellow group-hover:text-black transition-all">Deployed</span>
-                    <p class="text-[9px] md:text-[10px] font-black text-black/20 mt-1 uppercase tracking-tighter">Unit: ZT-HE-001</p>
-                </div>
-            </div>
-            
-            <h4 class="font-black text-xl md:text-2xl mb-1 tracking-tighter uppercase group-hover:text-construction-yellow transition-colors italic truncate">Excavator CAT 320 GC</h4>
-            <p class="text-[9px] md:text-[10px] font-black text-black/30 uppercase tracking-[0.2em] md:tracking-[0.3em] mb-8 md:mb-10">Site Infrastructure Logic</p>
-
-            <div class="space-y-4 md:space-y-6 pt-8 md:pt-10 border-t-2 border-black/[0.05]">
-                <div class="flex justify-between items-center text-xs">
-                    <span class="font-black text-black/30 uppercase tracking-widest text-[8px] md:text-[9px]">Site Location</span>
-                    <span class="font-black text-black uppercase italic">Warehouse C3</span>
-                </div>
-                <div class="flex justify-between items-center text-xs">
-                    <span class="font-black text-black/30 uppercase tracking-widest text-[8px] md:text-[9px]">Maint. Cycle</span>
-                    <span class="font-black text-black px-2 py-1 bg-construction-yellow rounded-md text-[9px] md:text-[10px] uppercase">14 Days Rem.</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Machine Card 2 -->
-        <div class="bg-white rounded-[32px] md:rounded-[40px] border-2 border-black p-8 md:p-12 group hover:shadow-heavy transition-all duration-500 relative overflow-hidden">
-            <div class="flex justify-between items-start mb-8 md:mb-12">
-                <div class="w-16 h-16 md:w-20 md:h-20 bg-construction-yellow rounded-2xl md:rounded-3xl flex items-center justify-center shadow-xl group-hover:bg-black transition-colors duration-500 border-2 border-black">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="3" class="md:w-8 md:h-8 group-hover:stroke-[#FFCD00] transition-colors"><path d="M22 17h-2.4C18.4 15.2 16.3 14 14 14s-4.4 1.2-5.6 3H1V7h20v10z"></path><path d="M14 6v8"></path></svg>
-                </div>
-                <div class="flex flex-col items-end gap-1 md:gap-2">
-                    <span class="px-3 md:px-4 py-1.5 border-2 border-black text-black text-[8px] md:text-[9px] font-black rounded-lg uppercase tracking-[0.1em] md:tracking-[0.2em] group-hover:bg-black group-hover:text-white transition-all">Standby</span>
-                    <p class="text-[9px] md:text-[10px] font-black text-black/20 mt-1 uppercase tracking-tighter">Unit: ZT-CR-002</p>
-                </div>
-            </div>
-            
-            <h4 class="font-black text-xl md:text-2xl mb-1 tracking-tighter uppercase group-hover:text-construction-yellow transition-colors italic truncate">Tower Crane Liebherr</h4>
-            <p class="text-[9px] md:text-[10px] font-black text-black/30 uppercase tracking-[0.2em] md:tracking-[0.3em] mb-8 md:mb-10">Lifting Protocol Unit</p>
-
-            <div class="space-y-4 md:space-y-6 pt-8 md:pt-10 border-t-2 border-black/[0.05]">
-                <div class="flex justify-between items-center text-xs">
-                    <span class="font-black text-black/30 uppercase tracking-widest text-[8px] md:text-[9px]">Site Location</span>
-                    <span class="font-black text-black uppercase italic">Yard Bekasi</span>
-                </div>
-                <div class="flex justify-between items-center text-xs">
-                    <span class="font-black text-black/30 uppercase tracking-widest text-[8px] md:text-[9px]">Ops Status</span>
-                    <span class="font-black text-black uppercase tracking-widest text-[9px] md:text-[10px]">Optimal Zone</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Machine Card 3 -->
-        <div class="bg-black rounded-[32px] md:rounded-[40px] border-2 border-black p-8 md:p-12 group hover:shadow-heavy transition-all duration-500 relative overflow-hidden text-white">
-            <div class="flex justify-between items-start mb-8 md:mb-12">
-                <div class="w-16 h-16 md:w-20 md:h-20 bg-construction-yellow rounded-2xl md:rounded-3xl flex items-center justify-center shadow-xl group-hover:bg-white transition-colors duration-500 border-2 border-black">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="3" class="md:w-8 md:h-8 transition-colors"><rect x="1" y="3" width="15" height="13" rx="2" ry="2"></rect><path d="M16 8h4l3 3v5h-7V8z"></path></svg>
-                </div>
-                <div class="flex flex-col items-end gap-1 md:gap-2">
-                    <span class="px-3 md:px-4 py-1.5 bg-construction-yellow text-black text-[8px] md:text-[9px] font-black rounded-lg uppercase tracking-[0.1em] md:tracking-[0.2em] border-2 border-black group-hover:bg-white transition-all">Repairs</span>
-                    <p class="text-[9px] md:text-[10px] font-black text-white/20 mt-1 uppercase tracking-tighter">Unit: ZT-TR-015</p>
-                </div>
-            </div>
-            
-            <h4 class="font-black text-xl md:text-2xl mb-1 tracking-tighter uppercase group-hover:text-construction-yellow transition-colors italic truncate">Mixer Truck Hino</h4>
-            <p class="text-[9px] md:text-[10px] font-black text-white/30 uppercase tracking-[0.2em] md:tracking-[0.3em] mb-8 md:mb-10">Concrete Logistics</p>
-
-            <div class="space-y-4 md:space-y-6 pt-8 md:pt-10 border-t-2 border-white/10">
-                <div class="flex justify-between items-center text-xs">
-                    <span class="font-black text-white/30 uppercase tracking-widest text-[8px] md:text-[9px]">Site Location</span>
-                    <span class="font-black text-white uppercase italic">Workshop HQ</span>
-                </div>
-                <div class="flex justify-between items-center text-xs">
-                    <span class="font-black text-white/30 uppercase tracking-widest text-[8px] md:text-[9px]">Est. Recovery</span>
-                    <span class="font-black text-construction-yellow uppercase text-[9px] md:text-[10px]">Tomorrow, 09:00</span>
-                </div>
+                <button class="px-10 py-5 bg-construction-yellow text-black rounded-2xl font-black text-[10px] uppercase tracking-[0.4em] border-2 border-black shadow-xl group-hover:bg-white transition-all">
+                    Initialize Logistics
+                </button>
             </div>
         </div>
     </div>
-</div>
+
+    <!-- Asset Tag Collection -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+        @php
+            $fleet = [
+                ['EXCAVATOR CAT 320', 'SN-092-221', 'Location: Site C3', 'Operational', '10.2k Hours'],
+                ['DUMP TRUCK HINO', 'SN-881-X41', 'Location: Bekasi Hub', 'Maintenance', '4.5k Hours'],
+                ['BULLDOZER D6R', 'SN-002-K92', 'Location: Site 04', 'Operational', '15.1k Hours'],
+                ['MOBILE CRANE 50T', 'SN-221-M33', 'Location: BSD HQ', 'Operational', '2.8k Hours'],
+            ];
+        @endphp
+
+        @foreach($fleet as $unit)
+        <div class="bg-white border-2 border-black rounded-[48px] overflow-hidden flex flex-col md:flex-row hover:shadow-heavy transition-all duration-700 group">
+            <!-- Asset Plate (Left) -->
+            <div class="md:w-56 bg-black p-10 flex flex-col justify-between items-center text-center group-hover:bg-construction-yellow transition-all duration-500">
+                <span class="text-[9px] font-black text-white/30 group-hover:text-black/30 uppercase tracking-[0.4em]">Serial Plate</span>
+                <div class="rotate-0 md:-rotate-90 origin-center py-10">
+                    <span class="text-3xl font-black text-white group-hover:text-black tracking-tighter uppercase whitespace-nowrap">{{ $unit[1] }}</span>
+                </div>
+                <div class="w-10 h-10 rounded-xl border-2 border-white/20 flex items-center justify-center text-white group-hover:border-black/20 group-hover:text-black transition-all">
+                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                </div>
+            </div>
+
+            <!-- Asset Details (Main) -->
+            <div class="flex-1 p-10 md:p-14 space-y-10 relative">
+                <div class="hidden md:block absolute top-10 right-10 opacity-5 group-hover:opacity-20 transition-opacity">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="1"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                </div>
+                
+                <div>
+                    <h4 class="text-3xl font-black uppercase tracking-tighter mb-4 text-black group-hover:text-construction-yellow transition-colors">{{ $unit[0] }}</h4>
+                    <div class="flex items-center gap-3">
+                        <span class="w-1.5 h-1.5 rounded-full {{ $unit[3] == 'Operational' ? 'bg-green-500' : 'bg-red-500 animate-pulse' }}"></span>
+                        <span class="text-[10px] font-black uppercase tracking-widest text-black/40">{{ $unit[3] }} — {{ $unit[2] }}</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-10 pt-10 border-t-2 border-black/5">
+                    <div>
+                        <span class="text-[9px] font-black uppercase tracking-widest text-black/20 block mb-2">Usage Metric</span>
+                        <p class="text-xl font-black tabular-nums">{{ $unit[4] }}</p>
+                    </div>
+                    <div class="flex items-center justify-end">
+                        <button class="px-8 py-4 bg-black text-white rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-construction-yellow hover:text-black transition-all shadow-heavy">Update Log</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endforeach
+    </div>
 </div>
 @endsection
