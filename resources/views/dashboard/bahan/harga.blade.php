@@ -28,8 +28,20 @@
             <h2 class="text-3xl md:text-4xl font-black tracking-tighter text-black uppercase">Market Price Index</h2>
             <p class="text-[10px] md:text-[11px] font-black text-black/30 uppercase mt-2 tracking-[0.3em]">Last Updated: {{ date('d M Y') }} — Regional Jakarta/Jawa Barat</p>
         </div>
-        <div class="flex items-center gap-4">
-            <button @click="showCreateModal = true" class="px-8 py-4 bg-black text-white rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-construction-yellow hover:text-black transition-all duration-300 shadow-heavy flex items-center gap-3">
+        <div class="flex flex-col sm:flex-row items-center gap-4">
+            <form action="{{ route('dashboard.harga-bahan') }}" method="GET" class="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
+                <div class="relative w-full sm:w-64">
+                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Search Material..." class="w-full pl-12 pr-6 py-4 bg-black/[0.03] border-2 border-black rounded-xl focus:bg-construction-yellow/10 transition-all font-black text-[11px] uppercase tracking-widest outline-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" class="absolute left-4 top-1/2 -translate-y-1/2 text-black/20"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                </div>
+                <select name="category" onchange="this.form.submit()" class="w-full sm:w-auto pl-6 pr-10 py-4 bg-black/[0.03] border-2 border-black rounded-xl focus:bg-construction-yellow/10 transition-all font-black text-[11px] uppercase tracking-widest outline-none appearance-none cursor-pointer">
+                    <option value="">All Categories</option>
+                    @foreach($categories as $cat)
+                        <option value="{{ $cat }}" {{ request('category') == $cat ? 'selected' : '' }}>{{ $cat }}</option>
+                    @endforeach
+                </select>
+            </form>
+            <button @click="showCreateModal = true" class="w-full sm:w-auto px-8 py-4 bg-black text-white rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-construction-yellow hover:text-black transition-all duration-300 shadow-heavy flex items-center justify-center gap-3">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                 Add Material
             </button>
