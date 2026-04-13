@@ -41,9 +41,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
             return view('dashboard.armada.index');
         })->name('dashboard.armada');
 
-        Route::get('/pekerja', function () {
-            return view('dashboard.pekerja.index');
-        })->name('dashboard.pekerja');
+        Route::get('/pekerja', [\App\Http\Controllers\WorkerController::class, 'index'])->name('dashboard.pekerja');
+        Route::post('/pekerja', [\App\Http\Controllers\WorkerController::class, 'store'])->name('dashboard.pekerja.store');
+        Route::put('/pekerja/{id}', [\App\Http\Controllers\WorkerController::class, 'update'])->name('dashboard.pekerja.update');
+        Route::delete('/pekerja/{id}', [\App\Http\Controllers\WorkerController::class, 'destroy'])->name('dashboard.pekerja.destroy');
     });
 
     // Profile Management
