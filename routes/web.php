@@ -30,6 +30,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
             return view('dashboard.bahan.index');
         })->name('dashboard.bahan');
 
+        Route::get('/harga-bahan', function () {
+            return view('dashboard.bahan.harga');
+        })->name('dashboard.harga-bahan');
+
         Route::get('/armada', function () {
             return view('dashboard.armada.index');
         })->name('dashboard.armada');
