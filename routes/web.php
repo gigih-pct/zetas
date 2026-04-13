@@ -20,6 +20,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('dashboard/internal')->group(function () {
         Route::get('/proyek', [\App\Http\Controllers\ProjectController::class, 'index'])->name('dashboard.proyek');
         Route::post('/proyek', [\App\Http\Controllers\ProjectController::class, 'store'])->name('dashboard.proyek.store');
+        Route::put('/proyek/{id}', [\App\Http\Controllers\ProjectController::class, 'update'])->name('dashboard.proyek.update');
+        Route::delete('/proyek/{id}', [\App\Http\Controllers\ProjectController::class, 'destroy'])->name('dashboard.proyek.destroy');
 
         Route::get('/rab', function () {
             return view('dashboard.rab.index');
